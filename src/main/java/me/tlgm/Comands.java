@@ -1,11 +1,23 @@
 package me.tlgm;
 
-public class Comands {
+public enum Comands {
+    START("/start", "запуск бота"),
+    HELP("/help", "помощь"),
+    ENTER_FIO("/fio", "введи ФИО"),
+    ENTER_PASSPORT("passport", "введи серию и номер паспорта");
 
-    private static final String COMMAND_INIT_CHAR = "/";
+    private final String description;
 
-    public static final String HELP = COMMAND_INIT_CHAR + "help";
+    Comands(String name, String description) {
+        this.description = description;
+    }
 
-    public static final String ENTER_FIO = COMMAND_INIT_CHAR + "fio";
-    public static final String ENTER_PASSPORT = COMMAND_INIT_CHAR + "passport";
+    @Override
+    public String toString() {
+        StringBuilder result = new StringBuilder();
+        for (Comands value : values()) {
+            result.append(String.format("%s1: %s2 \n", value.name(), value.description));
+        }
+        return result.toString();
+    }
 }

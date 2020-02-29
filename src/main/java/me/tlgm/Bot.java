@@ -18,6 +18,8 @@ public class Bot extends TelegramLongPollingBot {
 
     private final String BOT_NAME = "LoanBot";
     private final String BOT_TOKEN = "950873857:AAGMygfvRTUVc0fvk4NnX1-9vo5UgT6gVCc";
+    private final String HELP_TEXT = "помоги себе сам )))";
+    private final String START_TEXT = "Это кредитный бот список команд: " + Comands.START.toString();
 
     public void onUpdateReceived(Update update) {
         if (update.getMessage() != null) {
@@ -27,12 +29,21 @@ public class Bot extends TelegramLongPollingBot {
 
     private void handleIncomingMessage(Message message) {
         String text = message.getText();
-        if (text.startsWith(Comands.ENTER_FIO)) {
-            sendMessage(handleFIO(text), message);
-        } else if (text.startsWith(Comands.ENTER_PASSPORT)) {
-            sendMessage(handlePassport(text), message);
-        } else {
-            sendMessage(message.getText(), message);
+        switch (Comands.valueOf(text)) {
+            case ENTER_FIO:
+                sendMessage(handleFIO(text), message);
+                break;
+            case ENTER_PASSPORT:
+                sendMessage(message.getText(), message);
+                break;
+            case HELP:
+                sendMessage(HELP_TEXT, message);
+                break;
+            case START:
+                sendMessage(START_TEXT, message);
+                break;
+            default:
+                sendMessage(START_TEXT, message);
         }
     }
 
@@ -68,13 +79,13 @@ public class Bot extends TelegramLongPollingBot {
     }
 
     private String handleFIO(String text) {
-        String fio = text.trim().replace(Comands.ENTER_FIO, "");
+        String fio = text.trim().replace(Comands.ENTER_FIO.name(), "");
         // тут будет какая-то логика обработки ФИО
         return fio;
     }
 
     private String handlePassport(String text) {
-        String passpor = text.trim().replace(Comands.ENTER_PASSPORT, "");
+        String passpor = text.trim().replace(Comands.ENTER_PASSPORT.name(), "");
         // тут будет какая-то логика обработки серии и номера паспорта
         return passpor;
     }
