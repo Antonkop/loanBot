@@ -1,3 +1,5 @@
+package me.tlgm;
+
 public class Comands {
 
     private static final String COMMAND_INIT_CHAR = "/";

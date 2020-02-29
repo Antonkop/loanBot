@@ -1,3 +1,5 @@
+package me.tlgm;
+
 import lombok.extern.slf4j.Slf4j;
 import org.telegram.telegrambots.ApiContextInitializer;
 import org.telegram.telegrambots.meta.TelegramBotsApi;
