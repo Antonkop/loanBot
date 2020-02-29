@@ -18,7 +18,7 @@ public class Bot extends TelegramLongPollingBot {
 
     private final String BOT_NAME = "LoanBot";
     private final String BOT_TOKEN = "950873857:AAGMygfvRTUVc0fvk4NnX1-9vo5UgT6gVCc";
-    private final String HELP_TEXT = "помоги себе сам )))";
+    private final String HELP_TEXT = "помоги себе сам ))))";
     private final String START_TEXT = "Это кредитный бот список команд: " + Comands.HELP.toString();
 
     public void onUpdateReceived(Update update) {
