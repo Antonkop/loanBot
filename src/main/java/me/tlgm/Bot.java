@@ -37,15 +37,13 @@ public class Bot extends TelegramLongPollingBot {
     }
 
     private void handleIncomingMessage(Message message) {
-        if (!message.isUserMessage() && message.hasText()) {
-            String text = message.getText();
-            if (text.startsWith(Comands.ENTER_FIO)) {
-                sendMessage(handleFIO(text), message);
-            } else if (text.startsWith(Comands.ENTER_PASSPORT)) {
-                sendMessage(handlePassport(text), message);
-            } else {
-                sendMessage(message.getText(), message);
-            }
+        String text = message.getText();
+        if (text.startsWith(Comands.ENTER_FIO)) {
+            sendMessage(handleFIO(text), message);
+        } else if (text.startsWith(Comands.ENTER_PASSPORT)) {
+            sendMessage(handlePassport(text), message);
+        } else {
+            sendMessage(message.getText(), message);
         }
     }
 
