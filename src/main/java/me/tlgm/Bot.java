@@ -21,19 +21,19 @@ public class Bot extends TelegramLongPollingBot {
 
     public void onUpdateReceived(Update update) {
 
-        String chatId = String.valueOf(update.getMessage().getChatId());
-        SendMessage sendMessage = new SendMessage().setChatId(chatId);
-        sendMessage.setText("ты хуй");
-        try {
-            execute(sendMessage);
-        } catch (TelegramApiException e) {
-            log.error(e.getLocalizedMessage());
-            e.printStackTrace();
-        }
-
-//        if (update.getMessage() != null) {
-//            handleIncomingMessage(update.getMessage());
+//        String chatId = String.valueOf(update.getMessage().getChatId());
+//        SendMessage sendMessage = new SendMessage().setChatId(chatId);
+//        sendMessage.setText("ты хуй");
+//        try {
+//            execute(sendMessage);
+//        } catch (TelegramApiException e) {
+//            log.error(e.getLocalizedMessage());
+//            e.printStackTrace();
 //        }
+
+        if (update.getMessage() != null) {
+            handleIncomingMessage(update.getMessage());
+        }
     }
 
     private void handleIncomingMessage(Message message) {
@@ -51,7 +51,7 @@ public class Bot extends TelegramLongPollingBot {
 
     private void sendMessage(String text, Message message) {
         SendMessage sendMessageRequest = new SendMessage();
-        sendMessageRequest.setChatId(message.getChatId());
+        sendMessageRequest.setChatId(String.valueOf(message.getChatId()));
         sendMessageRequest.setText(text);
         sendMessageRequest.setReplyToMessageId(message.getMessageId());
         sendMessageRequest.enableMarkdown(true);
