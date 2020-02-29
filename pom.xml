@@ -30,8 +30,8 @@
                     <assembleDirectory>target</assembleDirectory>
                     <programs>
                         <program>
-                            <mainClass>com.home.server.TelegramBot</mainClass>
-                            <name>workerBot</name>
+                            <mainClass>me.tlgm.Main</mainClass>
+                            <name>loanBot</name>
                         </program>
                     </programs>
                 </configuration>
