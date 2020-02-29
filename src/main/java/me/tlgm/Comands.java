@@ -1,7 +1,6 @@
 package me.tlgm;
 
 public enum Comands {
-    START("/start", "запуск бота"),
     HELP("/help", "помощь"),
     ENTER_FIO("/fio", "введи ФИО"),
     ENTER_PASSPORT("passport", "введи серию и номер паспорта");
