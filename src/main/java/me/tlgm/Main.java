@@ -14,6 +14,7 @@ public class Main {
             telegramBotsApi.registerBot(new Bot());
         } catch (TelegramApiException e) {
             log.error(e.getLocalizedMessage());
+            e.printStackTrace();
         }
     }
 }

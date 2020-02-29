@@ -20,10 +20,20 @@ public class Bot extends TelegramLongPollingBot {
     private final String BOT_TOKEN = "950873857:AAGMygfvRTUVc0fvk4NnX1-9vo5UgT6gVCc";
 
     public void onUpdateReceived(Update update) {
-        if (update.getMessage() != null) {
-            handleIncomingMessage(update.getMessage());
+
+        String chatId = String.valueOf(update.getMessage().getChatId());
+        SendMessage sendMessage = new SendMessage().setChatId(chatId);
+        sendMessage.setText("ты хуй");
+        try {
+            execute(sendMessage);
+        } catch (TelegramApiException e) {
+            log.error(e.getLocalizedMessage());
+            e.printStackTrace();
         }
 
+//        if (update.getMessage() != null) {
+//            handleIncomingMessage(update.getMessage());
+//        }
     }
 
     private void handleIncomingMessage(Message message) {
@@ -50,6 +60,7 @@ public class Bot extends TelegramLongPollingBot {
             execute(sendMessageRequest);
         } catch (TelegramApiException e) {
             e.printStackTrace();
+            log.error(e.getLocalizedMessage());
         }
     }
 
