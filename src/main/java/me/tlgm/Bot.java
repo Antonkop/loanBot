@@ -1,5 +1,6 @@
 package me.tlgm;
 
+import lombok.extern.slf4j.Slf4j;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Message;
@@ -12,9 +13,10 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import java.util.ArrayList;
 import java.util.List;
 
+@Slf4j
 public class Bot extends TelegramLongPollingBot {
 
-    private final String BOT_NAME = "Kredity_Vsem_Bot";
+    private final String BOT_NAME = "LoanBot";
     private final String BOT_TOKEN = "950873857:AAGMygfvRTUVc0fvk4NnX1-9vo5UgT6gVCc";
 
     public void onUpdateReceived(Update update) {
