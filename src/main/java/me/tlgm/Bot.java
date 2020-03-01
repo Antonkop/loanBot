@@ -50,13 +50,13 @@ public class Bot extends TelegramLongPollingBot {
         SendMessage sendMessage;
         if (text.startsWith(Comands.START)) {
             sendMessage = makeSendMessage(START_TEXT, message);
-            setButtons(sendMessage);
+            setButtons(sendMessage, getMainKeyboard());
             execute(sendMessage);
             return;
         }
         if (text.startsWith(Comands.HELP)) {
             sendMessage = makeSendMessage(HELP_TEXT, message);
-            setButtons(sendMessage);
+            setButtons(sendMessage, getMainKeyboard());
             execute(sendMessage);
             return;
         }
@@ -66,7 +66,9 @@ public class Bot extends TelegramLongPollingBot {
             return;
         }
         if (text.startsWith(CASH_CREDIT)) {
-            makeSendMessage(handleCashCredit(text), message);
+            sendMessage = makeSendMessage(handleCashCredit(text), message);
+            setButtons(sendMessage, getCashKeyboard());
+            execute(sendMessage);
             return;
         }
         makeSendMessage(message.getText(), message);
@@ -82,13 +84,16 @@ public class Bot extends TelegramLongPollingBot {
                 .setReplyMarkup(setButtonsForCart());
     }
 
-    private synchronized void setButtons(SendMessage sendMessage) {
+    private synchronized void setButtons(SendMessage sendMessage, List<KeyboardRow> keyboardRows) {
         ReplyKeyboardMarkup replyKeyboardMarkup = new ReplyKeyboardMarkup();
         sendMessage.setReplyMarkup(replyKeyboardMarkup);
         replyKeyboardMarkup.setSelective(true);
         replyKeyboardMarkup.setResizeKeyboard(true);
         replyKeyboardMarkup.setOneTimeKeyboard(false);
+        replyKeyboardMarkup.setKeyboard(keyboardRows);
+    }
 
+    private List<KeyboardRow> getMainKeyboard() {
         List<KeyboardRow> keyboard = new ArrayList<KeyboardRow>();
         KeyboardRow keyboardFirstRow = new KeyboardRow();
         keyboardFirstRow.add(new KeyboardButton(CART_CREDIT));
@@ -97,8 +102,18 @@ public class Bot extends TelegramLongPollingBot {
         keyboardSecondRow.add(new KeyboardButton(Comands.HELP));
         keyboard.add(keyboardFirstRow);
         keyboard.add(keyboardSecondRow);
-        replyKeyboardMarkup.setKeyboard(keyboard);
+        return keyboard;
     }
+
+    private List<KeyboardRow> getCashKeyboard() {
+        List<KeyboardRow> keyboard = new ArrayList<KeyboardRow>();
+        KeyboardRow keyboardFirstRow = new KeyboardRow();
+        keyboardFirstRow.add(new KeyboardButton("Отправить заявку"));
+        keyboardFirstRow.add(new KeyboardButton("Узнать статус заявки"));
+        keyboard.add(keyboardFirstRow);
+        return keyboard;
+    }
+
 
     private InlineKeyboardMarkup setButtonsForCart() {
         List<List<InlineKeyboardButton>> buttons = new ArrayList<List<InlineKeyboardButton>>();
