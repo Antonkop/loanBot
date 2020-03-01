@@ -5,7 +5,9 @@ import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMarkup;
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardButton;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardRow;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
@@ -72,8 +74,18 @@ public class Bot extends TelegramLongPollingBot {
     }
 
     private String handleCartCredit(String text) {
-        // тут будет какая-то логика обработки ФИО
+        setButtonsForCart();
         return "работать иди попрашайка";
+    }
+
+    private void setButtonsForCart() {
+        List<List<InlineKeyboardButton>> buttons = new ArrayList<List<InlineKeyboardButton>>();
+        List<InlineKeyboardButton> buttons1 = new ArrayList<InlineKeyboardButton>();
+        buttons1.add(new InlineKeyboardButton().setText("Отправить заявку").setCallbackData("17"));
+        buttons.add(buttons1);
+
+        InlineKeyboardMarkup markupKeyboard = new InlineKeyboardMarkup();
+        markupKeyboard.setKeyboard(buttons);
     }
 
     private String handleCashCredit(String text) {
