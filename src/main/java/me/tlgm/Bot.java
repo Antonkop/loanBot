@@ -48,7 +48,7 @@ public class Bot extends TelegramLongPollingBot {
         Message message = update.getMessage();
         String text = message.getText();
         SendMessage sendMessage;
-        if (text.startsWith(Comands.START)) {
+        if (text.startsWith(Comands.START) || text.startsWith(Comands.TO_MAIN)) {
             sendMessage = makeSendMessage(START_TEXT, message);
             setButtons(sendMessage, getMainKeyboard());
             execute(sendMessage);
@@ -110,7 +110,10 @@ public class Bot extends TelegramLongPollingBot {
         KeyboardRow keyboardFirstRow = new KeyboardRow();
         keyboardFirstRow.add(new KeyboardButton("Отправить заявку"));
         keyboardFirstRow.add(new KeyboardButton("Узнать статус заявки"));
+        KeyboardRow keyboardSecondRow = new KeyboardRow();
+        keyboardSecondRow.add(new KeyboardButton(Comands.TO_MAIN));
         keyboard.add(keyboardFirstRow);
+        keyboard.add(keyboardSecondRow);
         return keyboard;
     }
 
