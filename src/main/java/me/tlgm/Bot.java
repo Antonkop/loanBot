@@ -24,7 +24,6 @@ public class Bot extends TelegramLongPollingBot {
     private final String START_TEXT = "Это кредитный бот";
     private final String CASH_CREDIT = "Кредит наличными";
     private final String CART_CREDIT = "Кредит на карту";
-    private final String HELP_BUTTON_TEXT = "Помощь";
 
     private CallbackQueryResolver callbackQueryResolver;
 
@@ -56,7 +55,7 @@ public class Bot extends TelegramLongPollingBot {
             return;
         }
         if (text.startsWith(Comands.HELP)) {
-            sendMessage = makeSendMessage(START_TEXT, message);
+            sendMessage = makeSendMessage(HELP_TEXT, message);
             setButtons(sendMessage);
             execute(sendMessage);
             return;
