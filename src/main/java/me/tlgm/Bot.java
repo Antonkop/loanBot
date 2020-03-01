@@ -51,9 +51,7 @@ public class Bot extends TelegramLongPollingBot {
             return;
         }
         if (text.startsWith(CART_CREDIT)) {
-            sendMessage = makeSendMessage(handleCartCredit(text), message);
-            setButtonsForCart();
-            execute(sendMessage);
+            execute(makeSendMessage("Кредит на карту", message).setReplyMarkup(setButtonsForCart()));
             return;
         }
         if (text.startsWith(CASH_CREDIT)) {
@@ -64,12 +62,13 @@ public class Bot extends TelegramLongPollingBot {
     }
 
     private SendMessage makeSendMessage(String text, Message message) {
-        SendMessage sendMessageRequest = new SendMessage();
-        sendMessageRequest.setChatId(String.valueOf(message.getChatId()));
-        sendMessageRequest.setText(text);
-        sendMessageRequest.setReplyToMessageId(message.getMessageId());
-        sendMessageRequest.enableMarkdown(true);
-        return sendMessageRequest;
+        return new SendMessage()
+                .setChatId(message.getChatId())
+                .setReplyToMessageId(message.getMessageId())
+                .setText(text)
+                .enableMarkdown(true)
+                .enableMarkdownV2(true)
+                .setReplyMarkup(setButtonsForCart());
     }
 
     private synchronized void setButtons(SendMessage sendMessage) {
@@ -90,12 +89,7 @@ public class Bot extends TelegramLongPollingBot {
         replyKeyboardMarkup.setKeyboard(keyboard);
     }
 
-    private String handleCartCredit(String text) {
-        setButtonsForCart();
-        return "работать иди попрашайка";
-    }
-
-    private void setButtonsForCart() {
+    private InlineKeyboardMarkup setButtonsForCart() {
         List<List<InlineKeyboardButton>> buttons = new ArrayList<List<InlineKeyboardButton>>();
         List<InlineKeyboardButton> buttons1 = new ArrayList<InlineKeyboardButton>();
         buttons1.add(new InlineKeyboardButton().setText("Отправить заявку").setCallbackData("17"));
@@ -103,6 +97,7 @@ public class Bot extends TelegramLongPollingBot {
 
         InlineKeyboardMarkup markupKeyboard = new InlineKeyboardMarkup();
         markupKeyboard.setKeyboard(buttons);
+        return markupKeyboard;
     }
 
     private String handleCashCredit(String text) {
