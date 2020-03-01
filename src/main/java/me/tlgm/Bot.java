@@ -51,6 +51,7 @@ public class Bot extends TelegramLongPollingBot {
         Message message = update.getMessage();
         String text = message.getText();
         SendMessage sendMessage;
+        messageMaker = new MessageMaker();
         if (text.startsWith(Comands.START) || text.startsWith(Comands.TO_MAIN)) {
             sendMessage = messageMaker.makeSendMessage(START_TEXT, message, getMainKeyboard());
             execute(sendMessage);
