@@ -27,45 +27,49 @@ public class Bot extends TelegramLongPollingBot {
     private final String HELP_BUTTON_TEXT = "Помощь";
 
     public void onUpdateReceived(Update update) {
-        if (update.getMessage() != null) {
-            handleIncomingMessage(update.getMessage());
+        try {
+            handleIncomingMessage(update);
+        } catch (TelegramApiException e) {
+            e.printStackTrace();
         }
     }
 
-    private void handleIncomingMessage(Message message) {
+    private void handleIncomingMessage(Update update) throws TelegramApiException {
+        Message message = update.getMessage();
         String text = message.getText();
+        SendMessage sendMessage;
         if (text.startsWith(Comands.START)) {
-            sendMessage(START_TEXT, message);
+            sendMessage = makeSendMessage(START_TEXT, message);
+            setButtons(sendMessage);
+            execute(sendMessage);
             return;
         }
         if (text.startsWith(Comands.HELP)) {
-            sendMessage(HELP_TEXT, message);
+            sendMessage = makeSendMessage(START_TEXT, message);
+            setButtons(sendMessage);
+            execute(sendMessage);
             return;
         }
         if (text.startsWith(CART_CREDIT)) {
-            sendMessage(handleCartCredit(text), message);
+            sendMessage = makeSendMessage(handleCartCredit(text), message);
+            setButtonsForCart();
+            execute(sendMessage);
             return;
         }
         if (text.startsWith(CASH_CREDIT)) {
-            sendMessage(handleCashCredit(text), message);
+            makeSendMessage(handleCashCredit(text), message);
             return;
         }
-        sendMessage(message.getText(), message);
+        makeSendMessage(message.getText(), message);
     }
 
-    private void sendMessage(String text, Message message) {
+    private SendMessage makeSendMessage(String text, Message message) {
         SendMessage sendMessageRequest = new SendMessage();
         sendMessageRequest.setChatId(String.valueOf(message.getChatId()));
         sendMessageRequest.setText(text);
         sendMessageRequest.setReplyToMessageId(message.getMessageId());
         sendMessageRequest.enableMarkdown(true);
-        setButtons(sendMessageRequest);
-        try {
-            execute(sendMessageRequest);
-        } catch (TelegramApiException e) {
-            e.printStackTrace();
-            log.error(e.getLocalizedMessage());
-        }
+        return sendMessageRequest;
     }
 
     private synchronized void setButtons(SendMessage sendMessage) {
@@ -80,7 +84,7 @@ public class Bot extends TelegramLongPollingBot {
         keyboardFirstRow.add(new KeyboardButton(CART_CREDIT));
         keyboardFirstRow.add(new KeyboardButton(CASH_CREDIT));
         KeyboardRow keyboardSecondRow = new KeyboardRow();
-        keyboardSecondRow.add(new KeyboardButton(HELP_BUTTON_TEXT));
+        keyboardSecondRow.add(new KeyboardButton(Comands.HELP));
         keyboard.add(keyboardFirstRow);
         keyboard.add(keyboardSecondRow);
         replyKeyboardMarkup.setKeyboard(keyboard);
