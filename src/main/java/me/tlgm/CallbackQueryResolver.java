@@ -11,11 +11,11 @@ public class CallbackQueryResolver {
                 .setShowAlert(true)
                 .setCacheTime(100);
         if (CallbackData.BID_CART_CALLBACK.name().equals(callbackQuery.getData())) {
-            answer.setText("Фио и номер и серию паспорта ф формате ФИО хххх-хххххх");
+            answer.setText("Введите ФИО и номер и серию паспорта ф формате ФИО хххх-хххххх");
             return answer;
         }
         if (CallbackData.BID_STATUS_CART_CALLBACK.name().equals(callbackQuery.getData())) {
-            answer.setText("Фио и номер и серию паспорта ф формате ФИО хххх-хххххх");
+            answer.setText("Введите номер заявки");
             return answer;
         }
         return answer;
