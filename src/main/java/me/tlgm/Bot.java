@@ -28,6 +28,7 @@ public class Bot extends TelegramLongPollingBot {
     private final String CREATE_BID = "Отправить заявку";
 
     private CallbackQueryResolver callbackQueryResolver;
+    private MessageMaker messageMaker;
 
     public void onUpdateReceived(Update update) {
         if (update.hasMessage()) {
@@ -51,48 +52,26 @@ public class Bot extends TelegramLongPollingBot {
         String text = message.getText();
         SendMessage sendMessage;
         if (text.startsWith(Comands.START) || text.startsWith(Comands.TO_MAIN)) {
-            sendMessage = makeSendMessage(START_TEXT, message);
-            setButtons(sendMessage, getMainKeyboard());
+            sendMessage = messageMaker.makeSendMessage(START_TEXT, message, getMainKeyboard());
             execute(sendMessage);
             return;
         }
         if (text.startsWith(Comands.HELP)) {
-            sendMessage = makeSendMessage(HELP_TEXT, message);
-            setButtons(sendMessage, getMainKeyboard());
+            sendMessage = messageMaker.makeSendMessage(HELP_TEXT, message, getMainKeyboard());
             execute(sendMessage);
             return;
         }
         if (text.startsWith(CART_CREDIT)) {
-            execute(makeSendMessage(CART_CREDIT, message)
+            execute(messageMaker.makeSendMessage(CART_CREDIT, message)
                     .setReplyMarkup(setButtonsForCart()));
             return;
         }
         if (text.startsWith(CASH_CREDIT)) {
-            sendMessage = makeSendMessage(handleCashCredit(text), message);
-            setButtons(sendMessage, getCashKeyboard());
+            sendMessage = messageMaker.makeSendMessage(handleCashCredit(text), message, getCashKeyboard());
             execute(sendMessage);
             return;
         }
-        makeSendMessage(message.getText(), message);
-    }
-
-    private SendMessage makeSendMessage(String text, Message message) {
-        return new SendMessage()
-                .setChatId(message.getChatId())
-                .setReplyToMessageId(message.getMessageId())
-                .setText(text)
-                .enableMarkdown(true)
-                .enableMarkdownV2(true)
-                .setReplyMarkup(setButtonsForCart());
-    }
-
-    private synchronized void setButtons(SendMessage sendMessage, List<KeyboardRow> keyboardRows) {
-        ReplyKeyboardMarkup replyKeyboardMarkup = new ReplyKeyboardMarkup();
-        sendMessage.setReplyMarkup(replyKeyboardMarkup);
-        replyKeyboardMarkup.setSelective(true);
-        replyKeyboardMarkup.setResizeKeyboard(true);
-        replyKeyboardMarkup.setOneTimeKeyboard(false);
-        replyKeyboardMarkup.setKeyboard(keyboardRows);
+        messageMaker.makeSendMessage(message.getText(), message);
     }
 
     private List<KeyboardRow> getMainKeyboard() {
