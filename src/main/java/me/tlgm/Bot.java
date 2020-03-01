@@ -21,9 +21,10 @@ public class Bot extends TelegramLongPollingBot {
     private final String BOT_NAME = "LoanBot";
     private final String BOT_TOKEN = "950873857:AAGMygfvRTUVc0fvk4NnX1-9vo5UgT6gVCc";
     private final String HELP_TEXT = "помоги себе сам )))";
-    private final String START_TEXT = "Это кредитный бот список команд: ";
+    private final String START_TEXT = "Это кредитный бот";
     private final String CASH_CREDIT = "Кредит наличными";
     private final String CART_CREDIT = "Кредит на карту";
+    private final String HELP_BUTTON_TEXT = "Помощь";
 
     public void onUpdateReceived(Update update) {
         if (update.getMessage() != null) {
@@ -33,13 +34,23 @@ public class Bot extends TelegramLongPollingBot {
 
     private void handleIncomingMessage(Message message) {
         String text = message.getText();
+        if (text.startsWith(Comands.START)) {
+            sendMessage(START_TEXT, message);
+            return;
+        }
+        if (text.startsWith(Comands.HELP)) {
+            sendMessage(HELP_TEXT, message);
+            return;
+        }
         if (text.startsWith(CART_CREDIT)) {
             sendMessage(handleCartCredit(text), message);
-        } else if (text.startsWith(CASH_CREDIT)) {
-            sendMessage(handleCashCredit(text), message);
-        } else {
-            sendMessage(message.getText(), message);
+            return;
         }
+        if (text.startsWith(CASH_CREDIT)) {
+            sendMessage(handleCashCredit(text), message);
+            return;
+        }
+        sendMessage(message.getText(), message);
     }
 
     private void sendMessage(String text, Message message) {
@@ -68,8 +79,10 @@ public class Bot extends TelegramLongPollingBot {
         KeyboardRow keyboardFirstRow = new KeyboardRow();
         keyboardFirstRow.add(new KeyboardButton(CART_CREDIT));
         keyboardFirstRow.add(new KeyboardButton(CASH_CREDIT));
+        KeyboardRow keyboardSecondRow = new KeyboardRow();
+        keyboardSecondRow.add(new KeyboardButton(HELP_BUTTON_TEXT));
         keyboard.add(keyboardFirstRow);
-
+        keyboard.add(keyboardSecondRow);
         replyKeyboardMarkup.setKeyboard(keyboard);
     }
 
