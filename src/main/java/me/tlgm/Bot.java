@@ -24,6 +24,8 @@ public class Bot extends TelegramLongPollingBot {
     private final String START_TEXT = "Это кредитный бот";
     private final String CASH_CREDIT = "Кредит наличными";
     private final String CART_CREDIT = "Кредит на карту";
+    private final String BID_STATUS = "Узнать статус заявки";
+    private final String CREATE_BID = "Отправить заявку";
 
     private CallbackQueryResolver callbackQueryResolver;
 
@@ -61,7 +63,7 @@ public class Bot extends TelegramLongPollingBot {
             return;
         }
         if (text.startsWith(CART_CREDIT)) {
-            execute(makeSendMessage("Кредит на карту", message)
+            execute(makeSendMessage(CART_CREDIT, message)
                     .setReplyMarkup(setButtonsForCart()));
             return;
         }
@@ -108,8 +110,8 @@ public class Bot extends TelegramLongPollingBot {
     private List<KeyboardRow> getCashKeyboard() {
         List<KeyboardRow> keyboard = new ArrayList<KeyboardRow>();
         KeyboardRow keyboardFirstRow = new KeyboardRow();
-        keyboardFirstRow.add(new KeyboardButton("Отправить заявку"));
-        keyboardFirstRow.add(new KeyboardButton("Узнать статус заявки"));
+        keyboardFirstRow.add(new KeyboardButton(CREATE_BID));
+        keyboardFirstRow.add(new KeyboardButton(BID_STATUS));
         KeyboardRow keyboardSecondRow = new KeyboardRow();
         keyboardSecondRow.add(new KeyboardButton(Comands.TO_MAIN));
         keyboard.add(keyboardFirstRow);
@@ -122,9 +124,9 @@ public class Bot extends TelegramLongPollingBot {
         List<List<InlineKeyboardButton>> buttons = new ArrayList<List<InlineKeyboardButton>>();
         List<InlineKeyboardButton> buttons1 = new ArrayList<InlineKeyboardButton>();
         buttons1.add(new InlineKeyboardButton()
-                .setText("Отправить заявку").setCallbackData(CallbackData.BID_CART_CALLBACK.name()));
+                .setText(CREATE_BID).setCallbackData(CallbackData.BID_CART_CALLBACK.name()));
         buttons1.add(new InlineKeyboardButton()
-                .setText("Узнать статус заявки").setCallbackData(CallbackData.BID_STATUS_CART_CALLBACK.name()));
+                .setText(BID_STATUS).setCallbackData(CallbackData.BID_STATUS_CART_CALLBACK.name()));
         buttons.add(buttons1);
 
         InlineKeyboardMarkup markupKeyboard = new InlineKeyboardMarkup();
